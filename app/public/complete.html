@@ -1,0 +1,15 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Demo Shop - Order complete</title><link rel="stylesheet" href="/style.css"></head>
+<body>
+<h1 data-test="complete-header">Thank you for your order!</h1>
+<p>Order #<span data-test="order-id"></span>, total <span data-test="order-total"></span></p>
+<a href="/inventory" data-test="back-home">Back to products</a>
+<script src="/app.js"></script>
+<script>
+  const order = JSON.parse(sessionStorage.getItem('lastOrder') || '{}');
+  document.querySelector('[data-test="order-id"]').textContent = order.id ?? '';
+  document.querySelector('[data-test="order-total"]').textContent = order.total != null ? money(order.total) : '';
+</script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+body { font-family: system-ui, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; color: #1f2933; }
+header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; margin-bottom: 1rem; }
+form { display: grid; gap: .6rem; max-width: 320px; }
+input, button { font: inherit; padding: .5rem; }
+button { cursor: pointer; }
+.error { color: #b42318; }
+.item { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: .6rem 0; border-bottom: 1px solid #eee; }
+.totals p { margin: .2rem 0; }

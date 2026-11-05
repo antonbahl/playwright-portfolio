@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Demo Shop - Login</title><link rel="stylesheet" href="/style.css"></head>
+<body>
+<h1>Demo Shop</h1>
+<form data-test="login-form">
+  <label>Username <input data-test="username" autocomplete="username"></label>
+  <label>Password <input data-test="password" type="password" autocomplete="current-password"></label>
+  <button data-test="login-button" type="submit">Login</button>
+  <p class="error" data-test="error" role="alert"></p>
+</form>
+<script src="/app.js"></script>
+<script>
+  document.querySelector('[data-test="login-form"]').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const username = document.querySelector('[data-test="username"]').value;
+    const password = document.querySelector('[data-test="password"]').value;
+    const { status, data } = await api('POST', '/api/login', { username, password });
+    if (status === 200) {
+      localStorage.setItem('token', data.token);
+      location.href = '/inventory';
+    } else {
+      document.querySelector('[data-test="error"]').textContent = data.error;
+    }
+  });
+</script>
+</body>
+</html>

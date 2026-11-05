@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Demo Shop - Checkout</title><link rel="stylesheet" href="/style.css"></head>
+<body>
+<h1>Checkout</h1>
+<form data-test="checkout-form">
+  <label>First name <input data-test="first-name"></label>
+  <label>Last name <input data-test="last-name"></label>
+  <label>Postal code <input data-test="postal-code"></label>
+  <button data-test="place-order" type="submit">Place order</button>
+  <p class="error" data-test="error" role="alert"></p>
+</form>
+<script src="/app.js"></script>
+<script>
+  requireLogin();
+  document.querySelector('[data-test="checkout-form"]').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const v = (t) => document.querySelector(`[data-test="${t}"]`).value;
+    const { status, data } = await api('POST', '/api/orders', {
+      firstName: v('first-name'),
+      lastName: v('last-name'),
+      postalCode: v('postal-code'),
+    });
+    if (status === 201) {
+      sessionStorage.setItem('lastOrder', JSON.stringify(data));
+      location.href = '/complete';
+    } else {
+      document.querySelector('[data-test="error"]').textContent = data.error;
+    }
+  });
+</script>
+</body>
+</html>

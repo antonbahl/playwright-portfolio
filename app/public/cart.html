@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Demo Shop - Cart</title><link rel="stylesheet" href="/style.css"></head>
+<body>
+<header><h1>Your cart</h1><a href="/inventory" data-test="continue-shopping">Continue shopping</a></header>
+<div data-test="cart-list"></div>
+<div class="totals">
+  <p>Subtotal: <span data-test="subtotal"></span></p>
+  <p>Tax: <span data-test="tax"></span></p>
+  <p><strong>Total: <span data-test="total"></span></strong></p>
+</div>
+<button data-test="checkout" onclick="location.href='/checkout'">Checkout</button>
+<script src="/app.js"></script>
+<script>
+  requireLogin();
+  const render = async () => {
+    const { data } = await api('GET', '/api/cart');
+    const list = document.querySelector('[data-test="cart-list"]');
+    list.innerHTML = '';
+    for (const i of data.items) {
+      const row = document.createElement('div');
+      row.className = 'item';
+      row.dataset.test = 'cart-item';
+      row.innerHTML = `<span data-test="item-name">${i.name}</span><span data-test="item-qty">x${i.quantity}</span><span data-test="line-total">${money(i.lineTotal)}</span>`;
+      const btn = document.createElement('button');
+      btn.dataset.test = 'remove';
+      btn.textContent = 'Remove';
+      btn.onclick = async () => {
+        await api('DELETE', `/api/cart/${i.productId}`);
+        render();
+      };
+      row.appendChild(btn);
+      list.appendChild(row);
+    }
+    document.querySelector('[data-test="subtotal"]').textContent = money(data.subtotal);
+    document.querySelector('[data-test="tax"]').textContent = money(data.tax);
+    document.querySelector('[data-test="total"]').textContent = money(data.total);
+    document.querySelector('[data-test="checkout"]').disabled = data.items.length === 0;
+  };
+  render();
+</script>
+</body>
+</html>

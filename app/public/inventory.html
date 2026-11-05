@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Demo Shop - Products</title><link rel="stylesheet" href="/style.css"></head>
+<body>
+<header>
+  <h1>Products</h1>
+  <nav><a href="/cart" data-test="cart-link">Cart <span data-test="cart-badge"></span></a> | <button data-test="logout" onclick="logout()">Logout</button></nav>
+</header>
+<div data-test="inventory-list"></div>
+<p class="error" data-test="error" role="alert"></p>
+<script src="/app.js"></script>
+<script>
+  requireLogin();
+  (async () => {
+    const { data: products } = await api('GET', '/api/products');
+    const list = document.querySelector('[data-test="inventory-list"]');
+    for (const p of products) {
+      const row = document.createElement('div');
+      row.className = 'item';
+      row.dataset.test = 'inventory-item';
+      row.innerHTML = `<span data-test="item-name">${p.name}</span><span data-test="item-price">${money(p.price)}</span>`;
+      const btn = document.createElement('button');
+      btn.dataset.test = 'add-to-cart';
+      btn.textContent = p.stock > 0 ? 'Add to cart' : 'Out of stock';
+      btn.disabled = p.stock === 0;
+      btn.onclick = async () => {
+        const { status, data } = await api('POST', '/api/cart', { productId: p.id, quantity: 1 });
+        document.querySelector('[data-test="error"]').textContent = status === 201 ? '' : data.error;
+        renderCartBadge();
+      };
+      row.appendChild(btn);
+      list.appendChild(row);
+    }
+    renderCartBadge();
+  })();
+</script>
+</body>
+</html>

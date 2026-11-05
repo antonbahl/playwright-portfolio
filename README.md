@@ -43,6 +43,8 @@ npm run test:api      # API tests only
 npm run report        # open the HTML report
 ```
 
+If Playwright's own Chromium can't be installed on your OS (for example macOS 13), run the UI tests in your installed Google Chrome instead: `PW_CHANNEL=chrome npm test`.
+
 Playwright starts the demo shop on `http://localhost:3000` before the tests and stops it afterwards. To look at the shop yourself: `npm start`, then log in as `standard_user` / `secret_sauce`.
 
 ## Design notes

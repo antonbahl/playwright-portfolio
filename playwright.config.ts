@@ -24,7 +24,9 @@ export default defineConfig({
     {
       name: 'ui',
       testDir: './tests/ui',
-      use: { ...devices['Desktop Chrome'] },
+      // PW_CHANNEL=chrome runs the UI tests in your installed Google Chrome
+      // (useful on systems where Playwright's own Chromium build is not supported, e.g. macOS 13).
+      use: { ...devices['Desktop Chrome'], ...(process.env.PW_CHANNEL ? { channel: process.env.PW_CHANNEL } : {}) },
     },
   ],
   // Starts the demo shop before the tests and stops it after.

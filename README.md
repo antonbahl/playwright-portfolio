@@ -1,5 +1,7 @@
 # Playwright + TypeScript Test Automation Framework
 
+[![Playwright tests](https://github.com/antonbahl/playwright-portfolio/actions/workflows/playwright.yml/badge.svg)](https://github.com/antonbahl/playwright-portfolio/actions/workflows/playwright.yml)
+
 A small, production-style test automation framework built with **Playwright** and **TypeScript**.
 It tests a demo web shop (included in this repo) at two levels, **UI** and **API**, and runs in **GitHub Actions** on every push and pull request.
 
